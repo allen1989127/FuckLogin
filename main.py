@@ -1,7 +1,7 @@
 #!/usr/bin/env python2
 # -*- coding: utf-8 -*-
 
-from org.sz.hellogoogle import HelloGoogle
+from org.sz.hellotwitter import HelloTwitter
 from org.sz.nmcontrol import NMControl
 from org.sz.login import Login
 
@@ -16,11 +16,12 @@ ACTION = 'checkin.php'
 
 if __name__ == '__main__':
     vpnc = NMControl(VPN_NAME)
-    hellog = HelloGoogle()
+    hellot = HelloTwitter()
+    login = Login(NAME, PASSWORD, URL)
 
     while 1:
         #first need to checkout the network is ok? ping google is easiest
-        res = hellog.hey()
+        res = hellot.hey()
         if res == 0:
             print ''
             print 'network is all right at', time.strftime('%Y-%m-%d %H:%M:%S', time.localtime(time.time()))
@@ -34,23 +35,13 @@ if __name__ == '__main__':
 
         vpnc.down()
 
-        login = Login(NAME, PASSWORD, URL)
         while 1:
-            if login.login(ACTION, REF_ACTION):
+            if not login.login(ACTION, REF_ACTION):
+                time.sleep(2)
+                continue
+            else:
                 break
-
-            time.sleep(5)
 
         print 'success to login'
 
-        while 1:
-            vpnc.up()
-            res = hellog.hey()
-            if res == 0:
-                print 'up ur network success, good to go'
-                time.sleep(12)
-                print ''
-                print ''
-                print ''
-                break
-
+        vpnc.up()

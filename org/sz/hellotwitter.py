@@ -1,10 +1,10 @@
 import os
 
-class HelloGoogle :
+class HelloTwitter:
 
-    url = 'www.google.com'
+    url = 'www.twitter.com'
 
-    '''just ping google.com to say hi'''
+    '''just ping twitter.com to say hi'''
     def hey(self) :
         res = os.system('ping -c3 ' + self.url)
         return res

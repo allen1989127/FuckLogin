@@ -1,5 +1,7 @@
 import urllib2
 
+from urllib2 import URLError
+
 class Login:
 
     def __init__(self, name, password, url):
@@ -20,7 +22,11 @@ class Login:
         data = '-----------------------------409036126110349932270895253\r\nContent-Disposition: form-data; name="account_in"\r\n\r\n' + self.name + '\r\n-----------------------------409036126110349932270895253\r\nContent-Disposition: form-data; name="password_in"\r\n\r\n' + self.password + '\r\n-----------------------------409036126110349932270895253--\r\n'
 
         req = urllib2.Request(self.url + action, data, headers)
-        response = urllib2.urlopen(req)
+        try :
+            response = urllib2.urlopen(req)
+        except URLError, e:
+            print e
+            return False
 
         if response.getcode() != 200:
             return False
